@@ -1,0 +1,16 @@
+upstream cluster {
+  server {{ ip }}:30000;
+}
+
+server {
+  listen 80;
+  listen [::]:80;
+
+  server_name kubernetes;
+
+  location / {
+    proxy_set_header Host $host;
+    proxy_pass http://cluster/;
+    proxy_pass_request_headers on;
+  }
+}

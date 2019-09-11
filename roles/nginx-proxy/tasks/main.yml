@@ -1,0 +1,17 @@
+---
+- name: Ensure NGINX is installed
+  package:
+    name: nginx
+    state: present
+  become: true
+
+- name: Disable default virtual host on NGINX
+  file:
+   path: /etc/nginx/sites-enabled/default
+   state: absent
+
+- name: Create the proxy NGINX configuration
+  template:
+    src: "nginx.j2"
+    dest: /etc/nginx/conf.d/k8s.conf
+  become: true
